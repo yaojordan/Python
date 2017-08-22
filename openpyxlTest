@@ -1,0 +1,77 @@
+#! python3
+
+import os
+import openpyxl
+
+os.chdir("C:\\Users\\vend_dt076\\Downloads\\old")
+
+MIPSwb = openpyxl.load_workbook('MIPS_ALL.xlsx')
+sheet = MIPSwb.get_sheet_by_name('Sheet0')
+
+#for i in range(1, sheet.max_row+1):
+#	print(i, sheet.cell(row=i, column=10).value)
+
+id_CR = []
+class_CR = []
+title = []
+state = []
+priority = []
+project = []
+submitDate = []
+submitter = []
+assigneeName = []
+resolveDate = []
+verifyDate = []
+closeDate = []
+
+
+
+#Read Data 
+#Store in each array.
+for row in range(2, sheet.max_row+1):  
+    id_CR.append(sheet['B' + str(row)].value)
+    class_CR.append(sheet['C' + str(row)].value)
+    title.append(sheet['D' + str(row)].value)
+    state.append(sheet['E' + str(row)].value)
+    priority.append(sheet['F' + str(row)].value)
+    project.append(sheet['G' + str(row)].value)
+    submitDate.append(sheet['H' + str(row)].value)
+    submitter.append(sheet['I' + str(row)].value)
+    assigneeName.append(sheet['J' + str(row)].value)
+    resolveDate.append(sheet['K' + str(row)].value)
+    verifyDate.append(sheet['L' + str(row)].value)
+    closeDate.append(sheet['M' + str(row)].value)
+
+
+
+lastWeekFile = 'w1.xlsm'
+thisWeekFile = 'w2.xlsm'
+
+#Paste data to weekly report
+#for acessing xlsm, it's need to add read_only and keep_vba
+syncupWb = openpyxl.load_workbook(filename=lastWeekFile, read_only=False, keep_vba=True)
+sheetRAW = syncupWb.get_sheet_by_name('RAW')
+
+for row in range(2, sheetRAW.max_row+1):
+    sheetRAW['A' + str(row)].value = id_CR[row-2]
+    sheetRAW['B' + str(row)].value = class_CR[row-2]
+    sheetRAW['C' + str(row)].value = title[row-2]
+    sheetRAW['D' + str(row)].value = state[row-2]
+    sheetRAW['E' + str(row)].value = priority[row-2]
+    sheetRAW['F' + str(row)].value = project[row-2]
+    sheetRAW['G' + str(row)].value = submitDate[row-2]
+    sheetRAW['H' + str(row)].value = submitter[row-2]
+    sheetRAW['I' + str(row)].value = assigneeName[row-2]
+    sheetRAW['J' + str(row)].value = resolveDate[row-2]
+    sheetRAW['K' + str(row)].value = verifyDate[row-2]
+    sheetRAW['L' + str(row)].value = closeDate[row-2]
+
+syncupWb.save(filename=thisWeekFile)
+        
+
+# Problem unsolved:  
+# diagrams will be lost in new file
+
+
+
+
